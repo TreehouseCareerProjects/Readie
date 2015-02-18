@@ -14,15 +14,17 @@ public class SearchResult {
     private String reviewer;
     private String bookTitle;
     private String reviewSnippet;
+    private String reviewUrl;
 
-    public SearchResult(String reviewer, String bookTitle, String reviewSnippet) {
+    public SearchResult(String reviewer, String bookTitle, String reviewSnippet, String reviewUrl) {
         this.reviewer = reviewer;
         this.bookTitle = bookTitle;
         this.reviewSnippet = reviewSnippet;
+        this.reviewUrl = reviewUrl;
     }
 
     public SearchResult() {
-        this("", "", "");
+        this("", "", "", "");
     }
 
     public String getReviewer() {
@@ -47,5 +49,13 @@ public class SearchResult {
 
     public void setReviewSnippet(String reviewSnippet) {
         this.reviewSnippet = reviewSnippet;
+    }
+
+    public String getReviewUrl() {
+        return reviewUrl;
+    }
+
+    public void setReviewUrl(String reviewUrl) {
+        this.reviewUrl = reviewUrl;
     }
 }
