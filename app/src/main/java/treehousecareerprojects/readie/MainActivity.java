@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Example Query
         Intent searchIntent = new Intent(this, SearchResultActivity.class);
         searchIntent.putExtra(SEARCH_QUERY_ID, "Cell");
         startActivity(searchIntent);

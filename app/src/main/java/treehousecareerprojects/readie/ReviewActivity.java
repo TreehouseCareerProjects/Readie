@@ -14,6 +14,7 @@ public class ReviewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
+        // Example
         SearchResult result = (SearchResult)
                 getIntent().getSerializableExtra(SearchResultActivity.SEARCH_RESULT_ID);
         String url = "Review picked: " + result.getReviewUrl();
