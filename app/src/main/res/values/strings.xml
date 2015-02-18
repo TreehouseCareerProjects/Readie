@@ -7,4 +7,8 @@
     <string name="title_activity_search_result">SearchResultActivity</string>
     <string name="title_activity_review">ReviewActivity</string>
 
+    <!-- Connection Error -->
+    <string name="connection_error_title">Connection Error</string>
+    <string name="connection_error_message">No connection could be established.</string>
+
 </resources>

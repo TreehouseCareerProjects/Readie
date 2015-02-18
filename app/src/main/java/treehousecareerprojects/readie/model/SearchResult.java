@@ -1,9 +1,11 @@
 package treehousecareerprojects.readie.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Dan on 2/17/2015.
  */
-public class SearchResult {
+public class SearchResult implements Serializable {
     public static final String REVIEW_ARRAY_JSON_ID = "BookReviews";
 
     public static final String REVIEWER_JSON_ID = "Reviewer";

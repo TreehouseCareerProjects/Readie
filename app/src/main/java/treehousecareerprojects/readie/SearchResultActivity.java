@@ -1,12 +1,14 @@
 package treehousecareerprojects.readie;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,10 +20,13 @@ import treehousecareerprojects.readie.http.HttpConnection;
 import treehousecareerprojects.readie.http.HttpMethod;
 import treehousecareerprojects.readie.http.HttpRequest;
 import treehousecareerprojects.readie.http.HttpResponse;
+import treehousecareerprojects.readie.json.SearchResponseParser;
 import treehousecareerprojects.readie.model.SearchResult;
 
 
 public class SearchResultActivity extends ListActivity {
+    public static final String SEARCH_RESULT_ID = "result";
+
     private static final String SEARCH_REQUEST_KEY =
             "68ehz8kqmje9uyw96abqp7p2";
     private static final String SEARCH_REQUEST_FORMAT =
@@ -45,6 +50,10 @@ public class SearchResultActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+
+        Intent reviewIntent = new Intent(this, ReviewActivity.class);
+        reviewIntent.putExtra(SEARCH_RESULT_ID, (SearchResult)(getListAdapter().getItem(position)));
+        startActivity(reviewIntent);
     }
 
     private String formatSearchRequest(String searchQuery) {
@@ -58,34 +67,35 @@ public class SearchResultActivity extends ListActivity {
 
         @Override
         public void onSuccess(HttpResponse response) {
-            progressBar.setVisibility(View.GONE);
-
             List<SearchResult> searchResults = new ArrayList<>();
 
+            progressBar.setVisibility(View.GONE);
+
             try {
-                JSONObject jsonObject = new JSONObject(response.getResponseBody());
-                JSONArray bookReviews = jsonObject.getJSONArray(SearchResult.REVIEW_ARRAY_JSON_ID);
-
-                for(int i = 0; i < bookReviews.length(); i++) {
-                    SearchResult result = new SearchResult();
-                    JSONObject review = bookReviews.getJSONObject(i);
-
-                    result.setBookTitle(review.getString(SearchResult.BOOK_TITLE_JSON_ID));
-                    result.setReviewer(review.getString(SearchResult.REVIEWER_JSON_ID));
-                    result.setReviewSnippet(review.getString(SearchResult.REVIEW_SNIPPET_JSON_ID));
-
-                    searchResults.add(result);
-                }
-
-                setListAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
-            } catch (JSONException e) {
+                JSONObject json = new JSONObject(response.getResponseBody());
+                searchResults = SearchResponseParser.extractSearchResults(json);
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            setListAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
         }
 
         @Override
         public void onFailure(HttpResponse response) {
-            //Add Dialog
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SearchResultActivity.this);
+            dialogBuilder
+                    .setTitle(R.string.connection_error_title)
+                    .setMessage(R.string.connection_error_message)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+
+             dialogBuilder.create().show();
         }
     }
 }
