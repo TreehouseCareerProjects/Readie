@@ -1,24 +1,20 @@
 package treehousecareerprojects.readie;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+    public static final String SEARCH_QUERY_ID = "search";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        try {
-            FileInputStream fileStream = new FileInputStream("");
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        Intent searchIntent = new Intent(this, SearchResultActivity.class);
+        searchIntent.putExtra(SEARCH_QUERY_ID, "Cell");
+        startActivity(searchIntent);
     }
 }

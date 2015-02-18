@@ -1,7 +1,5 @@
 package treehousecareerprojects.readie.html;
 
-import java.io.File;
-
 import treehousecareerprojects.readie.model.Review;
 
 /**
@@ -11,7 +9,7 @@ import treehousecareerprojects.readie.model.Review;
 abstract class PageHandler {
     private PageHandler next;
 
-    public void handle(File page, Review review) {
+    public void handle(String page, Review review) {
         if(next != null)
             next.handle(page, review);
         else
