@@ -23,15 +23,17 @@ public final class SearchResponseParser {
         JSONArray reviews = json.getJSONArray(SearchResult.REVIEW_ARRAY_JSON_ID);
 
         for(int i = 0; i < reviews.length(); i++) {
-            SearchResult result = new SearchResult();
             JSONObject review = reviews.getJSONObject(i);
 
-            result.setBookTitle(review.getString(SearchResult.BOOK_TITLE_JSON_ID));
-            result.setReviewer(review.getString(SearchResult.REVIEWER_JSON_ID));
-            result.setReviewSnippet(cleanReviewSnippet(review.getString(SearchResult.REVIEW_SNIPPET_JSON_ID)));
-            result.setReviewUrl(review.getString(SearchResult.REVIEW_URL_JSON_ID));
+            if(!isBatchOrAudioReview(review)) {
+                SearchResult result = new SearchResult();
+                result.setBookTitle(review.getString(SearchResult.BOOK_TITLE_JSON_ID));
+                result.setReviewer(review.getString(SearchResult.REVIEWER_JSON_ID));
+                result.setReviewSnippet(cleanReviewSnippet(review.getString(SearchResult.REVIEW_SNIPPET_JSON_ID)));
+                result.setReviewUrl(review.getString(SearchResult.REVIEW_URL_JSON_ID));
 
-            results.add(result);
+                results.add(result);
+            }
         }
 
         return results;
@@ -42,5 +44,12 @@ public final class SearchResponseParser {
         result.find();
 
         return result.group(SNIPPET_REGEX_ID);
+    }
+
+    private static boolean isBatchOrAudioReview(JSONObject review) throws JSONException {
+        boolean isAudio = review.getBoolean(SearchResult.AUDIO_REVIEW_STATUS_JSON_ID);
+        boolean isBatch = review.getBoolean(SearchResult.BATCH_REVIEW_STATUS_JSON_ID);
+
+        return isAudio || isBatch;
     }
 }

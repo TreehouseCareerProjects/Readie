@@ -12,6 +12,8 @@ public class SearchResult implements Serializable {
     public static final String BOOK_TITLE_JSON_ID = "Title";
     public static final String REVIEW_SNIPPET_JSON_ID = "Brief";
     public static final String REVIEW_URL_JSON_ID = "ReviewUrl";
+    public static final String BATCH_REVIEW_STATUS_JSON_ID = "BatchReview";
+    public static final String AUDIO_REVIEW_STATUS_JSON_ID = "AudioBook";
 
     private String reviewer;
     private String bookTitle;
