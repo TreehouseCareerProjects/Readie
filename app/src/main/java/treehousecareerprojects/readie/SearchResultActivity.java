@@ -1,8 +1,6 @@
 package treehousecareerprojects.readie;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +10,13 @@ import android.widget.ProgressBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import treehousecareerprojects.readie.adapter.SearchResultAdapter;
+import treehousecareerprojects.readie.dialog.ErrorDialogFragment;
 import treehousecareerprojects.readie.http.HttpConnection;
 import treehousecareerprojects.readie.http.HttpMethod;
 import treehousecareerprojects.readie.http.HttpRequest;
@@ -57,8 +58,33 @@ public class SearchResultActivity extends ListActivity {
     }
 
     private String formatSearchRequest(String searchQuery) {
-        //TODO: Encode query
-        return String.format(SEARCH_REQUEST_FORMAT, searchQuery, SEARCH_REQUEST_KEY);
+        String request = "";
+
+        try {
+            request = String.format(
+                    SEARCH_REQUEST_FORMAT,
+                    URLEncoder.encode(searchQuery, "UTF-8"),
+                    SEARCH_REQUEST_KEY);
+        }
+        catch (UnsupportedEncodingException e) {
+            displayTerminatingErrorDialog(
+                    R.string.encoding_error_title,
+                    R.string.encoding_error_message,
+                    "encoding_error_dialog");
+        }
+
+        return request;
+    }
+
+    private void displayTerminatingErrorDialog(int title, int message, String dialogId) {
+        Bundle dialogArgs = new Bundle();
+        dialogArgs.putInt(ErrorDialogFragment.TITLE_ID, title);
+        dialogArgs.putInt(ErrorDialogFragment.MESSAGE_ID, message);
+        dialogArgs.putBoolean(ErrorDialogFragment.TERMINATE_ID, true);
+
+        ErrorDialogFragment errorDialog = new ErrorDialogFragment();
+        errorDialog.setArguments(dialogArgs);
+        errorDialog.show(getFragmentManager(), dialogId);
     }
 
     private class SearchHttpRequest extends HttpRequest {
@@ -68,9 +94,9 @@ public class SearchResultActivity extends ListActivity {
 
         @Override
         public void onSuccess(HttpResponse response) {
-            List<SearchResult> searchResults = new ArrayList<>();
-
             progressBar.setVisibility(View.GONE);
+
+            List<SearchResult> searchResults = new ArrayList<>();
 
             try {
                 JSONObject json = new JSONObject(response.getResponseBody());
@@ -85,18 +111,12 @@ public class SearchResultActivity extends ListActivity {
 
         @Override
         public void onFailure(HttpResponse response) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SearchResultActivity.this);
-            dialogBuilder
-                    .setTitle(R.string.connection_error_title)
-                    .setMessage(R.string.connection_error_message)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
+            progressBar.setVisibility(View.GONE);
 
-             dialogBuilder.create().show();
+            displayTerminatingErrorDialog(
+                    R.string.connection_error_title,
+                    R.string.connection_error_message,
+                    "connection_error_dialog");
         }
     }
 }

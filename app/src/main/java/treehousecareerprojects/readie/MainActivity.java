@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
 
         // Example Query
         Intent searchIntent = new Intent(this, SearchResultActivity.class);
-        searchIntent.putExtra(SEARCH_QUERY_ID, "Cell");
+        searchIntent.putExtra(SEARCH_QUERY_ID, "Harry Potter");
         startActivity(searchIntent);
     }
 }
