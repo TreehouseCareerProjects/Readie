@@ -29,7 +29,7 @@ public class SearchResultActivity extends ListActivity {
     public static final String SEARCH_RESULT_ID = "result";
 
     private static final String SEARCH_REQUEST_KEY =
-            "xhhcf4dwtx55rj8y5cmx2t5t";
+            "";
     private static final String SEARCH_REQUEST_FORMAT =
             "http://api.usatoday.com/open/reviews/books/book/%s" +
             "?audiobooks=n&batch=n&encoding=json&api_key=%s";
