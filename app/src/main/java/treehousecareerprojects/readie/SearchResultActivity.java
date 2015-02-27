@@ -28,7 +28,7 @@ public class SearchResultActivity extends ListActivity {
     public static final String SEARCH_RESULT_ID = "result";
 
     private static final String SEARCH_REQUEST_KEY =
-            "68ehz8kqmje9uyw96abqp7p2";
+            "xhhcf4dwtx55rj8y5cmx2t5t";
     private static final String SEARCH_REQUEST_FORMAT =
             "http://api.usatoday.com/open/reviews/books/book/%s" +
             "?audiobooks=n&batch=n&encoding=json&api_key=%s";
@@ -57,6 +57,7 @@ public class SearchResultActivity extends ListActivity {
     }
 
     private String formatSearchRequest(String searchQuery) {
+        //TODO: Encode query
         return String.format(SEARCH_REQUEST_FORMAT, searchQuery, SEARCH_REQUEST_KEY);
     }
 

@@ -30,13 +30,13 @@ public class ReviewPageHandler extends PageHandler {
     }
 
     @Override
-    public void handle(String page, Review review) {
+    public Review handle(String page) {
         readDocument(page);
 
         if(canPageBeHandled(page))
-            review.set(extractReview(page));
+            return extractReview(page);
         else
-            super.handle(page, review);
+            return super.handle(page);
     }
 
     private void readDocument(String page) {

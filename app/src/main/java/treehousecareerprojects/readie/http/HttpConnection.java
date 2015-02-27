@@ -1,6 +1,7 @@
 package treehousecareerprojects.readie.http;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
 
@@ -42,9 +43,13 @@ public class HttpConnection {
             connection.disconnect();
         }
         catch(java.net.SocketTimeoutException exception) {
+            Log.d(HttpConnection.class.getSimpleName(), exception.getMessage());
+
             response = new HttpResponse(null, null, HttpURLConnection.HTTP_CLIENT_TIMEOUT);
         }
         catch(IOException exception) {
+            Log.d(HttpConnection.class.getSimpleName(), exception.getMessage());
+
             response = new HttpResponse(null, null, HttpURLConnection.HTTP_BAD_REQUEST);
         }
 

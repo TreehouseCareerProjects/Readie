@@ -9,9 +9,9 @@ import treehousecareerprojects.readie.model.Review;
 abstract class PageHandler {
     private PageHandler next;
 
-    public void handle(String page, Review review) {
+    public Review handle(String page) {
         if(next != null)
-            next.handle(page, review);
+            return next.handle(page);
         else
             throw new RuntimeException("No handler can parse the page.");
     }
