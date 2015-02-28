@@ -2,6 +2,7 @@ Readie
 ======
 
 A book review app that utilizes the USA TODAY Book Review API
+
 (http://developer.usatoday.com/docs/read/book_reviews)
 
 
