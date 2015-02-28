@@ -25,5 +25,8 @@
 
     <!-- Handler Exception -->
     <string name="page_handler_exception_message">No handler can parse the page.</string>
+    <string name="app_name_title">Readie</string>
+    <string name="title_or_author_label">Title or Author</string>
+    <string name="by_label">by:</string>
 
 </resources>
