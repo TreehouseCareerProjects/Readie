@@ -1,5 +1,6 @@
 package treehousecareerprojects.readie.html;
 
+import treehousecareerprojects.readie.R;
 import treehousecareerprojects.readie.model.Review;
 
 /**
@@ -13,7 +14,7 @@ abstract class PageHandler {
         if(next != null)
             return next.handle(page);
         else
-            throw new RuntimeException("No handler can parse the page.");
+            throw new PageHandlerException(R.string.page_handler_exception_message);
     }
 
     public void register(PageHandler handler) {

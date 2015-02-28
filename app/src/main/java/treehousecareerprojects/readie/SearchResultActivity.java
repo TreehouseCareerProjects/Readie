@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import treehousecareerprojects.readie.adapter.SearchResultAdapter;
@@ -96,17 +95,18 @@ public class SearchResultActivity extends ListActivity {
         public void onSuccess(HttpResponse response) {
             progressBar.setVisibility(View.GONE);
 
-            List<SearchResult> searchResults = new ArrayList<>();
-
             try {
                 JSONObject json = new JSONObject(response.getResponseBody());
-                searchResults = SearchResponseParser.extractSearchResults(json);
+                List<SearchResult> searchResults = SearchResponseParser.extractSearchResults(json);
+
+                setListAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
             }
             catch (JSONException e) {
-                e.printStackTrace();
+                displayTerminatingErrorDialog(
+                        R.string.json_error_title,
+                        R.string.json_error_message,
+                        "json_error_dialog");
             }
-
-            setListAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
         }
 
         @Override

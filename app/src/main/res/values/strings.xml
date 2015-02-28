@@ -19,4 +19,11 @@
     <string name="encoding_error_title">Encoding Error</string>
     <string name="encoding_error_message">There was an issue with your search query.</string>
 
+    <!-- JSON Error -->
+    <string name="json_error_title">JSON Error</string>
+    <string name="json_error_message">There was an issue reading the response from the server.</string>
+
+    <!-- Handler Exception -->
+    <string name="page_handler_exception_message">No handler can parse the page.</string>
+
 </resources>
