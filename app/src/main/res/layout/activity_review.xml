@@ -85,6 +85,13 @@
         android:padding="10dp"
         android:textColor="@android:color/white"
         android:text="@string/no_book_review_data"
-        tools:text="This is the text of the book review"/>
+        tools:text="This is the text of the book review">
+
+        <TextView
+            android:id="@+id/reviewLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
 
 </RelativeLayout>

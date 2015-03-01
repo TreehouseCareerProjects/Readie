@@ -9,6 +9,7 @@ public class SearchResult implements Serializable {
     public static final String REVIEW_ARRAY_JSON_ID = "BookReviews";
 
     public static final String REVIEWER_JSON_ID = "Reviewer";
+    public static final String AUTHOR_JSON_ID = "Author";
     public static final String BOOK_TITLE_JSON_ID = "Title";
     public static final String REVIEW_SNIPPET_JSON_ID = "Brief";
     public static final String REVIEW_URL_JSON_ID = "ReviewUrl";
@@ -16,19 +17,21 @@ public class SearchResult implements Serializable {
     public static final String AUDIO_REVIEW_STATUS_JSON_ID = "AudioBook";
 
     private String reviewer;
+    private String author;
     private String bookTitle;
     private String reviewSnippet;
     private String reviewUrl;
 
-    public SearchResult(String reviewer, String bookTitle, String reviewSnippet, String reviewUrl) {
+    public SearchResult(String reviewer, String author, String bookTitle, String reviewSnippet, String reviewUrl) {
         this.reviewer = reviewer;
+        this.author = author;
         this.bookTitle = bookTitle;
         this.reviewSnippet = reviewSnippet;
         this.reviewUrl = reviewUrl;
     }
 
     public SearchResult() {
-        this("", "", "", "");
+        this("", "", "", "", "");
     }
 
     public String getReviewer() {
@@ -37,6 +40,14 @@ public class SearchResult implements Serializable {
 
     public void setReviewer(String reviewer) {
         this.reviewer = reviewer;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getBookTitle() {

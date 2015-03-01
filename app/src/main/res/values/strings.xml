@@ -15,6 +15,10 @@
     <string name="connection_error_title">Connection Error</string>
     <string name="connection_error_message">No connection could be established.</string>
 
+    <!-- Review Page Error -->
+    <string name="review_page_error_title">Request Error</string>
+    <string name="review_page_error_message">The review page couldn\'t be retrieved.</string>
+
     <!-- Encoding Error -->
     <string name="encoding_error_title">Encoding Error</string>
     <string name="encoding_error_message">There was an issue with your search query.</string>

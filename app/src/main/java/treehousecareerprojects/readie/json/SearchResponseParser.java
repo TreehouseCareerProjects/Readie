@@ -25,12 +25,13 @@ public final class SearchResponseParser {
         for(int i = 0; i < reviews.length(); i++) {
             JSONObject review = reviews.getJSONObject(i);
 
-            if(!isBatchOrAudioReview(review)) {
+            if(!isBatchOrAudioReview(review) && hasReviewPath(review)) {
                 SearchResult result = new SearchResult();
                 result.setBookTitle(review.getString(SearchResult.BOOK_TITLE_JSON_ID));
                 result.setReviewer(review.getString(SearchResult.REVIEWER_JSON_ID));
-                result.setReviewSnippet(cleanReviewSnippet(review.getString(SearchResult.REVIEW_SNIPPET_JSON_ID)));
+                result.setAuthor(review.getString(SearchResult.AUTHOR_JSON_ID));
                 result.setReviewUrl(review.getString(SearchResult.REVIEW_URL_JSON_ID));
+                result.setReviewSnippet(cleanReviewSnippet(review.getString(SearchResult.REVIEW_SNIPPET_JSON_ID)));
 
                 results.add(result);
             }
@@ -51,5 +52,11 @@ public final class SearchResponseParser {
         boolean isBatch = review.getBoolean(SearchResult.BATCH_REVIEW_STATUS_JSON_ID);
 
         return isAudio || isBatch;
+    }
+
+    private static boolean hasReviewPath(JSONObject review) throws JSONException {
+        boolean hasPath = !review.getString(SearchResult.REVIEW_URL_JSON_ID).trim().equals("");
+
+        return hasPath;
     }
 }

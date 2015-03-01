@@ -7,7 +7,7 @@ import treehousecareerprojects.readie.model.Review;
  * Created by Dan on 2/16/2015.
  */
 
-abstract class PageHandler {
+public abstract class PageHandler {
     private PageHandler next;
 
     public Review handle(String page) {
