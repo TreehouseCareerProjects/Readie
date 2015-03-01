@@ -17,8 +17,7 @@ public class ReviewActivity extends Activity {
         // Example
         SearchResult result = (SearchResult)
                 getIntent().getSerializableExtra(SearchResultActivity.SEARCH_RESULT_ID);
-        String url = "Review picked: " + result.getReviewUrl();
 
-        ((TextView)findViewById(R.id.reviewUrlTextView)).setText(url);
+        ((TextView)findViewById(R.id.titleLabel)).setText(result.getBookTitle());
     }
 }
