@@ -41,16 +41,34 @@ public class SearchResultAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+
         if(convertView == null) {
-            LayoutInflater inflater =
-                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater)
+                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.search_result_item, null);
+
+            holder = new ViewHolder();
+            holder.bookTitle = (TextView)convertView.findViewById(R.id.bookTitleTextView);
+            holder.reviewer = (TextView)convertView.findViewById(R.id.reviewerTextView);
+            holder.snippet = (TextView)convertView.findViewById(R.id.snippetTextView);
+
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder)convertView.getTag();
         }
 
-        ((TextView)convertView.findViewById(R.id.bookTitleTextView)).setText(searchResults.get(position).getBookTitle());
-        ((TextView)convertView.findViewById(R.id.reviewerTextView)).setText(searchResults.get(position).getReviewer());
-        ((TextView)convertView.findViewById(R.id.snippetTextView)).setText(searchResults.get(position).getReviewSnippet());
+        holder.bookTitle.setText(searchResults.get(position).getBookTitle());
+        holder.reviewer.setText(searchResults.get(position).getReviewer());
+        holder.snippet.setText(searchResults.get(position).getReviewSnippet());
 
         return convertView;
+    }
+
+    static class ViewHolder {
+        TextView bookTitle;
+        TextView reviewer;
+        TextView snippet;
     }
 }
