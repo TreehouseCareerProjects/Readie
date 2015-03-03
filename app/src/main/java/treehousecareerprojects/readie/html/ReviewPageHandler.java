@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import treehousecareerprojects.readie.R;
 import treehousecareerprojects.readie.model.Review;
 
 /**
@@ -63,7 +64,10 @@ public class ReviewPageHandler extends PageHandler {
         Elements body = document.select(bodySelector);
 
         for(Element element : body)
-            bodyText.append(element.text() + " ");
+            bodyText.append(element.text() + "\n\n\t");
+
+        if(bodyText.toString().trim().equals(""))
+            throw new PageHandlerException(R.string.page_handler_exception_message);
 
         review.setBody(cleanBodyString(bodyText.toString()));
 

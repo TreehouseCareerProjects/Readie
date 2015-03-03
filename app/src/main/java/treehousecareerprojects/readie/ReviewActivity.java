@@ -2,10 +2,13 @@ package treehousecareerprojects.readie;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import treehousecareerprojects.readie.dialog.ErrorDialogFragment;
 import treehousecareerprojects.readie.html.PageHandler;
+import treehousecareerprojects.readie.html.PageHandlerException;
 import treehousecareerprojects.readie.html.PageHandlerUSAT;
 import treehousecareerprojects.readie.html.ReviewPageHandler;
 import treehousecareerprojects.readie.http.HttpConnection;
@@ -15,15 +18,17 @@ import treehousecareerprojects.readie.http.HttpResponse;
 import treehousecareerprojects.readie.model.Review;
 import treehousecareerprojects.readie.model.SearchResult;
 
-
 public class ReviewActivity extends Activity {
     private Review review;
     private SearchResult result;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+        progressBar = (ProgressBar)findViewById(R.id.indeterminateProgressView);
+        progressBar.setVisibility(View.VISIBLE);
 
         result = (SearchResult)
                 getIntent().getSerializableExtra(SearchResultActivity.SEARCH_RESULT_ID);
@@ -45,6 +50,17 @@ public class ReviewActivity extends Activity {
         reviewLabel.setText(review.getBody());
     }
 
+    private void displayTerminatingRequestError() {
+        Bundle dialogArgs = new Bundle();
+        dialogArgs.putInt(ErrorDialogFragment.TITLE_ID, R.string.review_page_error_title);
+        dialogArgs.putInt(ErrorDialogFragment.MESSAGE_ID, R.string.review_page_error_message);
+        dialogArgs.putBoolean(ErrorDialogFragment.TERMINATE_ID, true);
+
+        ErrorDialogFragment errorDialog = new ErrorDialogFragment();
+        errorDialog.setArguments(dialogArgs);
+        errorDialog.show(getFragmentManager(), "review_page_error_dialog");
+    }
+
     private class ReviewPageRequest extends HttpRequest {
         public ReviewPageRequest(String url) {
             super(HttpMethod.GET, url);
@@ -52,26 +68,27 @@ public class ReviewActivity extends Activity {
 
         @Override
         public void onSuccess(HttpResponse response) {
+            progressBar.setVisibility(View.GONE);
+
             PageHandler handler = new ReviewPageHandler(PageHandlerUSAT.EARLY_2000s);
             handler.register(new ReviewPageHandler(PageHandlerUSAT.LATE_2000s));
             handler.register(new ReviewPageHandler(PageHandlerUSAT.EARLY_2013));
             handler.register(new ReviewPageHandler(PageHandlerUSAT.LATE_2013));
 
-            review = handler.handle(response.getResponseBody());
-
-            insertReview();
+            try {
+                review = handler.handle(response.getResponseBody());
+                insertReview();
+            }
+            catch(PageHandlerException e) {
+                displayTerminatingRequestError();
+            }
         }
 
         @Override
         public void onFailure(HttpResponse response) {
-            Bundle dialogArgs = new Bundle();
-            dialogArgs.putInt(ErrorDialogFragment.TITLE_ID, R.string.review_page_error_title);
-            dialogArgs.putInt(ErrorDialogFragment.MESSAGE_ID, R.string.review_page_error_message);
-            dialogArgs.putBoolean(ErrorDialogFragment.TERMINATE_ID, true);
+            progressBar.setVisibility(View.GONE);
 
-            ErrorDialogFragment errorDialog = new ErrorDialogFragment();
-            errorDialog.setArguments(dialogArgs);
-            errorDialog.show(getFragmentManager(), "review_page_error_dialog");
+            displayTerminatingRequestError();
         }
     }
 }

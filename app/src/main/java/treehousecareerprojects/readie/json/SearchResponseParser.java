@@ -44,7 +44,15 @@ public final class SearchResponseParser {
         Matcher result = snippetPattern.matcher(snippet);
         result.find();
 
-        return result.group(SNIPPET_REGEX_ID);
+        String body = "";
+        try {
+            body = result.group(SNIPPET_REGEX_ID);
+        }
+        catch(IllegalStateException e) {
+            body = snippet;
+        }
+
+        return body;
     }
 
     private static boolean isBatchOrAudioReview(JSONObject review) throws JSONException {
