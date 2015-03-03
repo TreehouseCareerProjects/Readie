@@ -2,8 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="95" >
+    android:layout_height="match_parent" >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -12,10 +11,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
             tools:context="treehousecareerprojects.readie.ReviewActivity"
             android:background="@drawable/bg_gradient"
             android:orientation="vertical">
@@ -24,18 +19,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/review_text_background"
-                android:orientation="vertical"
-                android:layout_weight="3">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/titleLabel"
                     android:textColor="@android:color/white"
-                    android:textSize="30sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/title_text_size"
+                    android:layout_marginLeft="@dimen/title_margin_horizontal"
+                    android:layout_marginRight="@dimen/title_margin_horizontal"
+                    android:layout_marginTop="@dimen/title_margin_top"
                     android:gravity="center_horizontal"
                     tools:text="Book Title" />
 
@@ -43,11 +37,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/authorLabel"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="@dimen/author_margin_vertical"
+                    android:layout_marginTop="@dimen/author_margin_vertical"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp"
-                    android:paddingBottom="10dp"
+                    android:textSize="@dimen/author_text_size"
                     android:layout_gravity="center"
                     tools:text="Author Name" />
 
@@ -58,10 +51,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/description_label"
                 android:id="@+id/descriptionLabel"
-                android:textSize="20sp"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="2"/>
+                android:textSize="@dimen/description_text_size"
+                android:layout_marginTop="@dimen/description_margin_top"
+                android:layout_marginLeft="@dimen/description_margin_left" />
 
             <TextView
                 android:id="@+id/reviewLabel"
@@ -69,10 +61,10 @@
                 android:minHeight="450dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="5dp" />
+                android:paddingLeft="@dimen/review_padding_horizontal"
+                android:paddingRight="@dimen/review_padding_horizontal"
+                android:paddingTop="@dimen/review_padding_vertical"
+                android:paddingBottom="@dimen/review_padding_vertical" />
 
         </LinearLayout>
 
