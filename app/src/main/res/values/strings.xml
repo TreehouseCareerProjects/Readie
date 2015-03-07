@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Readie</string>
+    <string name="app_name_title">Readie</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
     <string name="title_activity_review">ReviewActivity</string>
@@ -23,13 +24,16 @@
     <string name="encoding_error_title">Encoding Error</string>
     <string name="encoding_error_message">There was an issue with your search query.</string>
 
+    <!-- Decoding Error -->
+    <string name="decoding_error_title">Decoding Error</string>
+    <string name="decoding_error_message">There was an issue reading the response from the server.</string>
+
     <!-- JSON Error -->
     <string name="json_error_title">JSON Error</string>
     <string name="json_error_message">There was an issue reading the response from the server.</string>
 
     <!-- Handler Exception -->
     <string name="page_handler_exception_message">No handler can parse the page.</string>
-    <string name="app_name_title">Readie</string>
 
     <!-- Query Alerts -->
     <string name="query_empty_alert">Enter something first!</string>
@@ -40,7 +44,10 @@
     <string name="description_label">Description</string>
     <string name="no_book_review_data">There is no data to display.</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Sort Menu Options -->
+    <string-array name="sort_menu_options">
+        <item>Title</item>
+        <item>Author</item>
+    </string-array>
 
 </resources>

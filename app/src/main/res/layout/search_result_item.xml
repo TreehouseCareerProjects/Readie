@@ -2,24 +2,60 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_gradient">
+    android:paddingLeft="@dimen/list_item_padding_horizontal"
+    android:paddingRight="@dimen/list_item_padding_horizontal"
+    android:paddingTop="@dimen/list_item_padding_vertical"
+    android:paddingBottom="@dimen/list_item_padding_vertical"
+    android:background="@color/bianca">
 
-    <TextView
-        android:id="@+id/bookTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/bookCoverImage"
+        android:layout_width="60dp"
+        android:layout_height="85dp"
+        android:layout_marginRight="@dimen/book_cover_right_margin"
+        android:layout_marginLeft="@dimen/book_cover_left_margin"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"
 
-    <TextView
-        android:id="@+id/reviewerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        tools:src="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/snippetTextView"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bookTitleLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/book_title_text_size"
+
+            tools:text="Book Title" />
+
+        <TextView
+            android:id="@+id/bookAuthorLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/book_author_bottom_margin"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/book_author_text_size"
+
+            tools:text="By: Author" />
+
+        <TextView
+            android:id="@+id/reviewSnippetLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/review_snippet_text_size"
+
+            tools:text="Review brief provided by USAT API." />
+
+    </LinearLayout>
 
 </LinearLayout>

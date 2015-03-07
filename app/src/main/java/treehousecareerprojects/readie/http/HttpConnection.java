@@ -36,7 +36,7 @@ public class HttpConnection {
 
             response = new HttpResponse(
                     connection.getHeaderFields(),
-                    IOUtils.toString(connection.getInputStream(), connection.getContentEncoding()),
+                    IOUtils.toByteArray(connection.getInputStream()),
                     connection.getResponseCode());
 
             connection.disconnect();

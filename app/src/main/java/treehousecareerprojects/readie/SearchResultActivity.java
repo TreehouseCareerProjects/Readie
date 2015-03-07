@@ -1,17 +1,27 @@
 package treehousecareerprojects.readie;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.List;
 
 import treehousecareerprojects.readie.adapter.SearchResultAdapter;
@@ -22,9 +32,10 @@ import treehousecareerprojects.readie.http.HttpRequest;
 import treehousecareerprojects.readie.http.HttpResponse;
 import treehousecareerprojects.readie.json.SearchResponseParser;
 import treehousecareerprojects.readie.model.SearchResult;
+import treehousecareerprojects.readie.model.SearchResultComparator;
 
 
-public class SearchResultActivity extends ListActivity {
+public class SearchResultActivity extends ActionBarActivity {
     public static final String SEARCH_RESULT_ID = "result";
 
     private static final String SEARCH_REQUEST_KEY =
@@ -34,6 +45,7 @@ public class SearchResultActivity extends ListActivity {
             "?audiobooks=n&batch=n&encoding=json&api_key=%s";
 
     private ProgressBar progressBar;
+    private List<SearchResult> searchResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +53,34 @@ public class SearchResultActivity extends ListActivity {
         setContentView(R.layout.activity_search_result);
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        setupActionBarDropdown();
 
         String searchQuery = getIntent().getStringExtra(MainActivity.SEARCH_QUERY_ID);
-        progressBar.setVisibility(View.VISIBLE);
         HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(searchQuery)));
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search_result, menu);
 
-        Intent reviewIntent = new Intent(this, ReviewActivity.class);
-        reviewIntent.putExtra(SEARCH_RESULT_ID, (SearchResult)(getListAdapter().getItem(position)));
-        startActivity(reviewIntent);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupActionBarDropdown() {
+        Spinner spinner = (Spinner)findViewById(R.id.sortSpinner);
+        ArrayAdapter<CharSequence> spinnerAdapter =
+                ArrayAdapter.createFromResource(this, R.array.sort_menu_options, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new OnSortOptionsNavigation((ListView) findViewById(R.id.list)));
     }
 
     private String formatSearchRequest(String searchQuery) {
@@ -96,10 +123,18 @@ public class SearchResultActivity extends ListActivity {
             progressBar.setVisibility(View.GONE);
 
             try {
-                JSONObject json = new JSONObject(response.getResponseBody());
-                List<SearchResult> searchResults = SearchResponseParser.extractSearchResults(json);
+                JSONObject json = new JSONObject(IOUtils.toString(response.getResponseBody(), "UTF-8"));
+                searchResults = SearchResponseParser.extractSearchResults(json);
 
-                setListAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
+                ListView listView = (ListView)findViewById(R.id.list);
+                listView.setAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
+                listView.setOnItemClickListener(new SearchResultItemClickListener(listView));
+            }
+            catch(IOException e) {
+                displayTerminatingErrorDialog(
+                        R.string.decoding_error_title,
+                        R.string.decoding_error_message,
+                        "decoding_error_dialog");
             }
             catch (JSONException e) {
                 displayTerminatingErrorDialog(
@@ -118,5 +153,48 @@ public class SearchResultActivity extends ListActivity {
                     R.string.connection_error_message,
                     "connection_error_dialog");
         }
+    }
+
+    private class SearchResultItemClickListener implements AdapterView.OnItemClickListener {
+        private ListView listView;
+
+        public SearchResultItemClickListener(ListView listView) {
+            this.listView = listView;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent reviewIntent = new Intent(SearchResultActivity.this, ReviewActivity.class);
+            reviewIntent.putExtra(SEARCH_RESULT_ID, (SearchResult)(listView.getAdapter().getItem(position)));
+            startActivity(reviewIntent);
+        }
+    }
+
+    private class OnSortOptionsNavigation implements Spinner.OnItemSelectedListener {
+        private ListView listView;
+        private String[] menuOptions = getResources().getStringArray(R.array.sort_menu_options);
+
+        public OnSortOptionsNavigation(ListView listView) {
+            this.listView = listView;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(searchResults != null) {
+                if (menuOptions[position].equals("Title"))
+                    Collections.sort(
+                            searchResults,
+                            new SearchResultComparator(SearchResultComparator.SortBy.TITLE));
+                else
+                    Collections.sort(
+                            searchResults,
+                            new SearchResultComparator(SearchResultComparator.SortBy.AUTHOR));
+
+                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {}
     }
 }

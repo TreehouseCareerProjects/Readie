@@ -1,8 +1,12 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ReadieActionBar</item>
+        <item name="actionBarStyle">@style/ReadieActionBar</item>
     </style>
 
+    <style name="ReadieActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@color/saddle</item>
+        <item name="background">@color/saddle</item>
+    </style>
 </resources>

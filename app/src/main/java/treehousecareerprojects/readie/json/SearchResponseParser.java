@@ -31,6 +31,7 @@ public final class SearchResponseParser {
                 result.setReviewer(review.getString(SearchResult.REVIEWER_JSON_ID));
                 result.setAuthor(review.getString(SearchResult.AUTHOR_JSON_ID));
                 result.setReviewUrl(review.getString(SearchResult.REVIEW_URL_JSON_ID));
+                result.setIsbn(review.getString(SearchResult.ISBN_JSON_ID));
                 result.setReviewSnippet(cleanReviewSnippet(review.getString(SearchResult.REVIEW_SNIPPET_JSON_ID)));
 
                 results.add(result);
@@ -56,14 +57,14 @@ public final class SearchResponseParser {
     }
 
     private static boolean isBatchOrAudioReview(JSONObject review) throws JSONException {
-        boolean isAudio = review.getBoolean(SearchResult.AUDIO_REVIEW_STATUS_JSON_ID);
-        boolean isBatch = review.getBoolean(SearchResult.BATCH_REVIEW_STATUS_JSON_ID);
+        final boolean isAudio = review.getBoolean(SearchResult.AUDIO_REVIEW_STATUS_JSON_ID);
+        final boolean isBatch = review.getBoolean(SearchResult.BATCH_REVIEW_STATUS_JSON_ID);
 
         return isAudio || isBatch;
     }
 
     private static boolean hasReviewPath(JSONObject review) throws JSONException {
-        boolean hasPath = !review.getString(SearchResult.REVIEW_URL_JSON_ID).trim().equals("");
+        final boolean hasPath = !review.getString(SearchResult.REVIEW_URL_JSON_ID).trim().equals("");
 
         return hasPath;
     }

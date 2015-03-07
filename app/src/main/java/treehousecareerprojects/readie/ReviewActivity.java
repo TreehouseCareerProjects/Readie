@@ -1,10 +1,17 @@
 package treehousecareerprojects.readie;
 
-import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
 
 import treehousecareerprojects.readie.dialog.ErrorDialogFragment;
 import treehousecareerprojects.readie.html.PageHandler;
@@ -18,7 +25,10 @@ import treehousecareerprojects.readie.http.HttpResponse;
 import treehousecareerprojects.readie.model.Review;
 import treehousecareerprojects.readie.model.SearchResult;
 
-public class ReviewActivity extends Activity {
+public class ReviewActivity extends ActionBarActivity {
+    private static final String BOOK_COVER_PATH_FORMAT =
+            "http://covers.openlibrary.org/b/ISBN/%s-M.jpg";
+
     private Review review;
     private SearchResult result;
     private ProgressBar progressBar;
@@ -27,13 +37,20 @@ public class ReviewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+
         progressBar = (ProgressBar)findViewById(R.id.indeterminateProgressView);
         progressBar.setVisibility(View.VISIBLE);
+        getSupportActionBar().hide();
 
         result = (SearchResult)
                 getIntent().getSerializableExtra(SearchResultActivity.SEARCH_RESULT_ID);
 
         HttpConnection.sendInBackground(new ReviewPageRequest(result.getReviewUrl()));
+        HttpConnection.sendInBackground(new BookCoverRequest(formatBookCoverPath(result.getIsbn())));
+    }
+
+    private String formatBookCoverPath(String isbn) {
+        return String.format(BOOK_COVER_PATH_FORMAT, isbn);
     }
 
     private void insertReview() {
@@ -76,10 +93,10 @@ public class ReviewActivity extends Activity {
             handler.register(new ReviewPageHandler(PageHandlerUSAT.LATE_2013));
 
             try {
-                review = handler.handle(response.getResponseBody());
+                review = handler.handle(IOUtils.toString(response.getResponseBody(), "UTF-8"));
                 insertReview();
             }
-            catch(PageHandlerException e) {
+            catch(IOException | PageHandlerException e){
                 displayTerminatingRequestError();
             }
         }
@@ -90,5 +107,22 @@ public class ReviewActivity extends Activity {
 
             displayTerminatingRequestError();
         }
+    }
+
+    private class BookCoverRequest extends HttpRequest {
+        public BookCoverRequest(String url) {
+            super(HttpMethod.GET, url);
+        }
+
+        @Override
+        public void onSuccess(HttpResponse response) {
+            byte[] image = response.getResponseBody();
+            Bitmap cover = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+           ((ImageView)findViewById(R.id.testImageView)).setImageBitmap(cover);
+        }
+
+        @Override
+        public void onFailure(HttpResponse response) {}
     }
 }

@@ -3,17 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="treehousecareerprojects.readie.SearchResultActivity"
-    android:background="@drawable/bg_gradient">
+    android:background="@color/shadow_green">
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/list_margin_horizontal"
+        android:layout_marginRight="@dimen/list_margin_horizontal"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5dp"
+        android:layout_below="@+id/divider" >
     </ListView>
 
     <ProgressBar
@@ -22,6 +24,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/sortSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spinner_vertical_margin"
+        android:layout_marginTop="@dimen/spinner_vertical_margin"
+        android:layout_marginLeft="@dimen/spinner_margin_left"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:paddingRight="@dimen/spinner_padding_right"
+        android:background="@color/shadow_green"
+        android:dropDownWidth="wrap_content"
+        android:popupBackground="@color/shadow_green"
+        android:spinnerMode="dropdown" />
+
+    <ImageView
+        android:id="@+id/divider"
+        android:src="@color/saddle"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/sortSpinner"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

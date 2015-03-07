@@ -15,23 +15,34 @@ public class SearchResult implements Serializable {
     public static final String REVIEW_URL_JSON_ID = "ReviewUrl";
     public static final String BATCH_REVIEW_STATUS_JSON_ID = "BatchReview";
     public static final String AUDIO_REVIEW_STATUS_JSON_ID = "AudioBook";
+    public static final String ISBN_JSON_ID = "ISBN";
 
     private String reviewer;
     private String author;
     private String bookTitle;
     private String reviewSnippet;
     private String reviewUrl;
+    private String isbn;
+    private byte[] bookCoverMedium;
 
-    public SearchResult(String reviewer, String author, String bookTitle, String reviewSnippet, String reviewUrl) {
+    public SearchResult(String reviewer,
+                        String author,
+                        String bookTitle,
+                        String reviewSnippet,
+                        String reviewUrl,
+                        String isbn,
+                        byte[] bookCoverMedium) {
         this.reviewer = reviewer;
         this.author = author;
         this.bookTitle = bookTitle;
         this.reviewSnippet = reviewSnippet;
         this.reviewUrl = reviewUrl;
+        this.isbn = isbn;
+        this.bookCoverMedium = bookCoverMedium;
     }
 
     public SearchResult() {
-        this("", "", "", "", "");
+        this("", "", "", "", "", "", null);
     }
 
     public String getReviewer() {
@@ -73,4 +84,21 @@ public class SearchResult implements Serializable {
     public void setReviewUrl(String reviewUrl) {
         this.reviewUrl = reviewUrl;
     }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public byte[] getBookCoverMedium() {
+        return bookCoverMedium;
+    }
+
+    public void setBookCoverMedium(byte[] bookCoverMedium) {
+        this.bookCoverMedium = bookCoverMedium;
+    }
+
 }

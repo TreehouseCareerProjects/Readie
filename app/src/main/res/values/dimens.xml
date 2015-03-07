@@ -18,4 +18,25 @@
     <dimen name="description_margin_top">25dp</dimen>
     <dimen name="description_text_size">20sp</dimen>
 
+    <!-- Search Results Page -->
+    <dimen name="list_margin_horizontal">10dp</dimen>
+
+    <dimen name="list_item_padding_horizontal">5dp</dimen>
+    <dimen name="list_item_padding_vertical">8dp</dimen>
+
+    <dimen name="review_snippet_text_size">10sp</dimen>
+
+    <dimen name="book_title_text_size">15sp</dimen>
+
+    <dimen name="book_author_text_size">12sp</dimen>
+    <dimen name="book_author_bottom_margin">20dp</dimen>
+
+    <dimen name="book_cover_right_margin">20dp</dimen>
+    <dimen name="book_cover_left_margin">10dp</dimen>
+
+    <dimen name="spinner_text_size">15dp</dimen>
+    <dimen name="spinner_vertical_margin">5dp</dimen>
+    <dimen name="spinner_margin_left">10dp</dimen>
+    <dimen name="spinner_padding_right">15dp</dimen>
+
 </resources>

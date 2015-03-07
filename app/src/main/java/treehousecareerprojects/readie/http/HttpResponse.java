@@ -8,11 +8,11 @@ import java.util.Map;
  */
 public class HttpResponse {
     private final Map<String, List<String>> responseHeaders;
-    private final String responseBody;
+    private final byte[] responseBody;
     private final int responseCode;
 
     public HttpResponse(Map<String, List<String>> responseHeaders,
-                        String responseBody,
+                        byte[] responseBody,
                         int responseCode) {
         this.responseHeaders = responseHeaders;
         this.responseBody = responseBody;
@@ -23,7 +23,7 @@ public class HttpResponse {
         return responseHeaders;
     }
 
-    public String getResponseBody() {
+    public byte[] getResponseBody() {
         return responseBody;
     }
 

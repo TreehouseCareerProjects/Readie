@@ -3,5 +3,11 @@
 
     <!-- Review Page -->
     <color name="review_text_background">#3F5138</color>
+    
+    <!-- App Palette -->
+    <color name="saddle">#4B3325</color>
+    <color name="shadow_green">#99C9B9</color>
+    <color name="orange_roughy">#C06013</color>
+    <color name="bianca">#FCFAF1</color>
 
 </resources>
