@@ -2,15 +2,15 @@
 <resources>
 
     <string name="app_name">Readie</string>
-    <string name="app_name_title">Readie</string>
+    <string name="app_name_title" translatable="false">Readie</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_search_result">SearchResultActivity</string>
-    <string name="title_activity_review">ReviewActivity</string>
+    <string name="title_activity_search_result" translatable="false">SearchResultActivity</string>
+    <string name="title_activity_review" translatable="false">ReviewActivity</string>
 
     <!-- Generic Error -->
     <string name="generic_error_title">Sorry</string>
     <string name="generic_error_message">There was a problem.</string>
-    <string name="generic_error_dismiss">OK</string>
+    <string name="generic_error_dismiss" translatable="false">OK</string>
 
     <!-- Connection Error -->
     <string name="connection_error_title">Connection Error</string>
@@ -29,7 +29,7 @@
     <string name="decoding_error_message">There was an issue reading the response from the server.</string>
 
     <!-- JSON Error -->
-    <string name="json_error_title">JSON Error</string>
+    <string name="json_error_title" translatable="false">JSON Error</string>
     <string name="json_error_message">There was an issue reading the response from the server.</string>
 
     <!-- Handler Exception -->

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Ajustes</string>
+    <string name="by_label">para:</string>
+    <string name="connection_error_message">No se pudo establecer conexión.</string>
+    <string name="connection_error_title">Error de conexión</string>
+    <string name="decoding_error_message">Había un problema la lectura de la respuesta del servidor.</string>
+    <string name="decoding_error_title">Decodificación de error</string>
+    <string name="description_label">Descripción</string>
+    <string name="encoding_error_message">Hubo un problema con su búsqueda.</string>
+    <string name="encoding_error_title">Codificación de error</string>
+    <string name="generic_error_message">Hubo un problema.</string>
+    <string name="generic_error_title">Triste</string>
+    <string name="json_error_message">Había un problema la lectura de la respuesta del servidor.</string>
+    <string name="no_book_review_data">No hay datos para mostrar.</string>
+    <string name="page_handler_exception_message">No manejador puede analizar la página.</string>
+    <string name="query_empty_alert">Escriba algo primero!</string>
+    <string name="review_page_error_message">La página de revisión no se pudo recuperar.</string>
+    <string name="review_page_error_title">Solicitud de error</string>
+    <string name="title_or_author_label">Título o Autor</string>
+    <string name="app_name" translatable="false"></string>
+</resources>
