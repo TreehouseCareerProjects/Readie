@@ -3,6 +3,7 @@ package treehousecareerprojects.readie;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,7 +35,7 @@ import treehousecareerprojects.readie.json.SearchResponseParser;
 import treehousecareerprojects.readie.model.SearchResult;
 import treehousecareerprojects.readie.model.SearchResultComparator;
 
-
+//TODO: Extract repeated locals as properties
 public class SearchResultActivity extends ActionBarActivity {
     public static final String SEARCH_RESULT_ID = "result";
 
@@ -45,6 +46,7 @@ public class SearchResultActivity extends ActionBarActivity {
             "?audiobooks=n&batch=n&encoding=json&api_key=%s";
 
     private ProgressBar progressBar;
+    private ListView listView;
     private List<SearchResult> searchResults;
 
     @Override
@@ -57,6 +59,8 @@ public class SearchResultActivity extends ActionBarActivity {
 
         setupActionBarDropdown();
 
+        listView = (ListView)findViewById(R.id.list);
+
         String searchQuery = getIntent().getStringExtra(MainActivity.SEARCH_QUERY_ID);
         HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(searchQuery)));
     }
@@ -65,6 +69,11 @@ public class SearchResultActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search_result, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setOnQueryTextListener(new OnNewQueryListener());
+        searchView.setSubmitButtonEnabled(true);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -80,7 +89,7 @@ public class SearchResultActivity extends ActionBarActivity {
                 ArrayAdapter.createFromResource(this, R.array.sort_menu_options, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new OnSortOptionsNavigation((ListView) findViewById(R.id.list)));
+        spinner.setOnItemSelectedListener(new OnSortOptionsNavigation());
     }
 
     private String formatSearchRequest(String searchQuery) {
@@ -126,9 +135,8 @@ public class SearchResultActivity extends ActionBarActivity {
                 JSONObject json = new JSONObject(IOUtils.toString(response.getResponseBody(), "UTF-8"));
                 searchResults = SearchResponseParser.extractSearchResults(json);
 
-                ListView listView = (ListView)findViewById(R.id.list);
                 listView.setAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
-                listView.setOnItemClickListener(new SearchResultItemClickListener(listView));
+                listView.setOnItemClickListener(new SearchResultItemClickListener());
             }
             catch(IOException e) {
                 displayTerminatingErrorDialog(
@@ -156,12 +164,6 @@ public class SearchResultActivity extends ActionBarActivity {
     }
 
     private class SearchResultItemClickListener implements AdapterView.OnItemClickListener {
-        private ListView listView;
-
-        public SearchResultItemClickListener(ListView listView) {
-            this.listView = listView;
-        }
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent reviewIntent = new Intent(SearchResultActivity.this, ReviewActivity.class);
@@ -171,12 +173,7 @@ public class SearchResultActivity extends ActionBarActivity {
     }
 
     private class OnSortOptionsNavigation implements Spinner.OnItemSelectedListener {
-        private ListView listView;
         private String[] menuOptions = getResources().getStringArray(R.array.sort_menu_options);
-
-        public OnSortOptionsNavigation(ListView listView) {
-            this.listView = listView;
-        }
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -196,5 +193,19 @@ public class SearchResultActivity extends ActionBarActivity {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {}
+    }
+
+    private class OnNewQueryListener implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String newQuery) {
+            HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(newQuery)));
+
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            return false;
+        }
     }
 }

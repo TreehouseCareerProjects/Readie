@@ -8,8 +8,7 @@ import java.util.Comparator;
 public class SearchResultComparator implements Comparator<SearchResult> {
     private SortBy order;
 
-    //TODO: Pull date and compare?
-    public enum SortBy {TITLE, AUTHOR};
+    public enum SortBy {TITLE, AUTHOR}
 
     public SearchResultComparator(SortBy order) {
         this.order = order;
