@@ -12,13 +12,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="treehousecareerprojects.readie.ReviewActivity"
-            android:background="@drawable/bg_gradient"
+            android:background="@color/shadow_green"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/review_text_background"
+                android:background="@color/shadow_green"
                 android:orientation="vertical">
 
                 <TextView
@@ -53,17 +53,24 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/description_label"
                 android:id="@+id/descriptionLabel"
                 android:textSize="@dimen/description_text_size"
                 android:layout_marginTop="@dimen/description_margin_top"
-                android:layout_marginLeft="@dimen/description_margin_left" />
+                android:layout_marginLeft="@dimen/description_margin_left"
+                android:background="@color/saddle"
+                android:paddingLeft="5dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textColor="@android:color/white"
+                android:paddingRight="5dp"
+                android:layout_marginRight="@dimen/description_margin_left"/>
 
             <TextView
                 android:id="@+id/reviewLabel"
-                android:background="@color/review_text_background"
+                android:background="@color/shadow_green"
                 android:minHeight="450dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
