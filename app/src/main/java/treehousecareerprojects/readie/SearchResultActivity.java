@@ -4,12 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -34,8 +30,9 @@ import treehousecareerprojects.readie.http.HttpResponse;
 import treehousecareerprojects.readie.json.SearchResponseParser;
 import treehousecareerprojects.readie.model.SearchResult;
 import treehousecareerprojects.readie.model.SearchResultComparator;
+import treehousecareerprojects.readie.view.SearchResultActionBar;
 
-//TODO: Extract repeated locals as properties
+
 public class SearchResultActivity extends ActionBarActivity {
     public static final String SEARCH_RESULT_ID = "result";
 
@@ -57,39 +54,15 @@ public class SearchResultActivity extends ActionBarActivity {
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        setupActionBarDropdown();
+        SearchResultActionBar actionBar = new SearchResultActionBar(this, getSupportActionBar());
+        actionBar.assembleActionBar();
+        actionBar.setOnNewQueryListener(new OnNewSearchQuery());
 
         listView = (ListView)findViewById(R.id.list);
+        listView.setOnItemClickListener(new SearchResultItemClickListener());
 
         String searchQuery = getIntent().getStringExtra(MainActivity.SEARCH_QUERY_ID);
         HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(searchQuery)));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search_result, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView)searchItem.getActionView();
-        searchView.setOnQueryTextListener(new OnNewQueryListener());
-        searchView.setSubmitButtonEnabled(true);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setupActionBarDropdown() {
-        Spinner spinner = (Spinner)findViewById(R.id.sortSpinner);
-        ArrayAdapter<CharSequence> spinnerAdapter =
-                ArrayAdapter.createFromResource(this, R.array.sort_menu_options, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new OnSortOptionsNavigation());
     }
 
     private String formatSearchRequest(String searchQuery) {
@@ -122,6 +95,7 @@ public class SearchResultActivity extends ActionBarActivity {
         errorDialog.show(getFragmentManager(), dialogId);
     }
 
+
     private class SearchHttpRequest extends HttpRequest {
         public SearchHttpRequest(String url) {
             super(HttpMethod.GET, url);
@@ -136,7 +110,6 @@ public class SearchResultActivity extends ActionBarActivity {
                 searchResults = SearchResponseParser.extractSearchResults(json);
 
                 listView.setAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
-                listView.setOnItemClickListener(new SearchResultItemClickListener());
             }
             catch(IOException e) {
                 displayTerminatingErrorDialog(
@@ -187,7 +160,7 @@ public class SearchResultActivity extends ActionBarActivity {
                             searchResults,
                             new SearchResultComparator(SearchResultComparator.SortBy.AUTHOR));
 
-                ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
             }
         }
 
@@ -195,10 +168,10 @@ public class SearchResultActivity extends ActionBarActivity {
         public void onNothingSelected(AdapterView<?> parent) {}
     }
 
-    private class OnNewQueryListener implements SearchView.OnQueryTextListener {
+    private class OnNewSearchQuery implements SearchView.OnQueryTextListener {
         @Override
-        public boolean onQueryTextSubmit(String newQuery) {
-            HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(newQuery)));
+        public boolean onQueryTextSubmit(String query) {
+            HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(query)));
 
             return false;
         }

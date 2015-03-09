@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -24,6 +25,7 @@ import treehousecareerprojects.readie.http.HttpRequest;
 import treehousecareerprojects.readie.http.HttpResponse;
 import treehousecareerprojects.readie.model.Review;
 import treehousecareerprojects.readie.model.SearchResult;
+import treehousecareerprojects.readie.view.ReviewActionBar;
 
 public class ReviewActivity extends ActionBarActivity {
     private static final String BOOK_COVER_PATH_FORMAT =
@@ -32,6 +34,7 @@ public class ReviewActivity extends ActionBarActivity {
     private Review review;
     private SearchResult result;
     private ProgressBar progressBar;
+    private ReviewActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,8 @@ public class ReviewActivity extends ActionBarActivity {
 
         progressBar = (ProgressBar)findViewById(R.id.indeterminateProgressView);
         progressBar.setVisibility(View.VISIBLE);
-        getSupportActionBar().hide();
+        actionBar = new ReviewActionBar(this, getSupportActionBar());
+        actionBar.assembleActionBar();
 
         result = (SearchResult)
                 getIntent().getSerializableExtra(SearchResultActivity.SEARCH_RESULT_ID);
@@ -124,5 +128,14 @@ public class ReviewActivity extends ActionBarActivity {
 
         @Override
         public void onFailure(HttpResponse response) {}
+    }
+
+    private class OnBackAction implements MenuItem.OnMenuItemClickListener {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            finish();
+
+            return false;
+        }
     }
 }

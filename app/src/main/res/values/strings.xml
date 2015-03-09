@@ -44,10 +44,17 @@
     <string name="description_label">Description</string>
     <string name="no_book_review_data">There is no data to display.</string>
 
+    <!-- Menu Item Titles -->
+    <string name="search_action_title">Search</string>
+    <string name="back_action_title">Back</string>
+
     <!-- Sort Menu Options -->
     <string-array name="sort_menu_options">
         <item>Title</item>
         <item>Author</item>
     </string-array>
+
+    <!-- Action Bar Titles -->
+    <string name="action_bar_main_title">Readie</string>
 
 </resources>
