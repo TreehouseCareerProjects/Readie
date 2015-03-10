@@ -57,6 +57,7 @@ public class SearchResultActivity extends ActionBarActivity {
         SearchResultActionBar actionBar = new SearchResultActionBar(this, getSupportActionBar());
         actionBar.assembleActionBar();
         actionBar.setOnNewQueryListener(new OnNewSearchQuery());
+        actionBar.setOnSortListener(new OnSortOptionsNavigation());
 
         listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new SearchResultItemClickListener());
