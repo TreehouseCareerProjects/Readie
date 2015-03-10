@@ -11,23 +11,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
-import org.apache.commons.io.IOUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import treehousecareerprojects.readie.adapter.SearchResultAdapter;
-import treehousecareerprojects.readie.dialog.ErrorDialogFragment;
 import treehousecareerprojects.readie.http.HttpConnection;
-import treehousecareerprojects.readie.http.HttpMethod;
-import treehousecareerprojects.readie.http.HttpRequest;
-import treehousecareerprojects.readie.http.HttpResponse;
-import treehousecareerprojects.readie.json.SearchResponseParser;
+import treehousecareerprojects.readie.http.request.SearchRequest;
 import treehousecareerprojects.readie.model.SearchResult;
 import treehousecareerprojects.readie.model.SearchResultComparator;
 import treehousecareerprojects.readie.view.SearchResultActionBar;
@@ -35,12 +25,6 @@ import treehousecareerprojects.readie.view.SearchResultActionBar;
 
 public class SearchResultActivity extends ActionBarActivity {
     public static final String SEARCH_RESULT_ID = "result";
-
-    private static final String SEARCH_REQUEST_KEY =
-            "xhhcf4dwtx55rj8y5cmx2t5t";
-    private static final String SEARCH_REQUEST_FORMAT =
-            "http://api.usatoday.com/open/reviews/books/book/%s" +
-            "?audiobooks=n&batch=n&encoding=json&api_key=%s";
 
     private ProgressBar progressBar;
     private ListView listView;
@@ -50,6 +34,8 @@ public class SearchResultActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
+
+        searchResults = new ArrayList<>();
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -61,80 +47,25 @@ public class SearchResultActivity extends ActionBarActivity {
 
         listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new SearchResultItemClickListener());
+        listView.setAdapter(new SearchResultAdapter(this, searchResults));
 
         String searchQuery = getIntent().getStringExtra(MainActivity.SEARCH_QUERY_ID);
-        HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(searchQuery)));
+        HttpConnection.sendInBackground(
+                new SearchRequest(this, searchQuery, getString(R.string.api_key), listView));
     }
 
-    private String formatSearchRequest(String searchQuery) {
-        String request = "";
-
-        try {
-            request = String.format(
-                    SEARCH_REQUEST_FORMAT,
-                    URLEncoder.encode(searchQuery, "UTF-8"),
-                    SEARCH_REQUEST_KEY);
-        }
-        catch (UnsupportedEncodingException e) {
-            displayTerminatingErrorDialog(
-                    R.string.encoding_error_title,
-                    R.string.encoding_error_message,
-                    "encoding_error_dialog");
-        }
-
-        return request;
+    public void toggleProgressBar() {
+        if(progressBar.getVisibility() == View.VISIBLE)
+            progressBar.setVisibility(View.INVISIBLE);
+        else
+            progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void displayTerminatingErrorDialog(int title, int message, String dialogId) {
-        Bundle dialogArgs = new Bundle();
-        dialogArgs.putInt(ErrorDialogFragment.TITLE_ID, title);
-        dialogArgs.putInt(ErrorDialogFragment.MESSAGE_ID, message);
-        dialogArgs.putBoolean(ErrorDialogFragment.TERMINATE_ID, true);
+    public void updateSearchResults(List<SearchResult> searchResults) {
+        this.searchResults.clear();
+        this.searchResults.addAll(searchResults);
 
-        ErrorDialogFragment errorDialog = new ErrorDialogFragment();
-        errorDialog.setArguments(dialogArgs);
-        errorDialog.show(getFragmentManager(), dialogId);
-    }
-
-
-    private class SearchHttpRequest extends HttpRequest {
-        public SearchHttpRequest(String url) {
-            super(HttpMethod.GET, url);
-        }
-
-        @Override
-        public void onSuccess(HttpResponse response) {
-            progressBar.setVisibility(View.GONE);
-
-            try {
-                JSONObject json = new JSONObject(IOUtils.toString(response.getResponseBody(), "UTF-8"));
-                searchResults = SearchResponseParser.extractSearchResults(json);
-
-                listView.setAdapter(new SearchResultAdapter(SearchResultActivity.this, searchResults));
-            }
-            catch(IOException e) {
-                displayTerminatingErrorDialog(
-                        R.string.decoding_error_title,
-                        R.string.decoding_error_message,
-                        "decoding_error_dialog");
-            }
-            catch (JSONException e) {
-                displayTerminatingErrorDialog(
-                        R.string.json_error_title,
-                        R.string.json_error_message,
-                        "json_error_dialog");
-            }
-        }
-
-        @Override
-        public void onFailure(HttpResponse response) {
-            progressBar.setVisibility(View.GONE);
-
-            displayTerminatingErrorDialog(
-                    R.string.connection_error_title,
-                    R.string.connection_error_message,
-                    "connection_error_dialog");
-        }
+        listView.setAdapter(new SearchResultAdapter(this, this.searchResults));
     }
 
     private class SearchResultItemClickListener implements AdapterView.OnItemClickListener {
@@ -172,7 +103,8 @@ public class SearchResultActivity extends ActionBarActivity {
     private class OnNewSearchQuery implements SearchView.OnQueryTextListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
-            HttpConnection.sendInBackground(new SearchHttpRequest(formatSearchRequest(query)));
+            HttpConnection.sendInBackground(
+                    new SearchRequest(SearchResultActivity.this, query, getString(R.string.api_key), listView));
 
             return false;
         }

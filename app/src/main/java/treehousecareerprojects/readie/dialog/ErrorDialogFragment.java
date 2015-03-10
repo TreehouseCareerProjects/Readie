@@ -1,5 +1,6 @@
 package treehousecareerprojects.readie.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -16,6 +17,17 @@ public class ErrorDialogFragment extends DialogFragment {
     public static final String TITLE_ID = "title";          //Dialog title string resource.
     public static final String MESSAGE_ID = "message";      //Dialog message string resource.
     public static final String TERMINATE_ID = "terminate";  //Does this finish the current activity?
+
+    public static void displayTerminatingErrorDialog(Activity context, int title, int message, String dialogId) {
+        Bundle dialogArgs = new Bundle();
+        dialogArgs.putInt(ErrorDialogFragment.TITLE_ID, title);
+        dialogArgs.putInt(ErrorDialogFragment.MESSAGE_ID, message);
+        dialogArgs.putBoolean(ErrorDialogFragment.TERMINATE_ID, true);
+
+        ErrorDialogFragment errorDialog = new ErrorDialogFragment();
+        errorDialog.setArguments(dialogArgs);
+        errorDialog.show(context.getFragmentManager(), dialogId);
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

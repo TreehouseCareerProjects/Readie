@@ -23,7 +23,7 @@ import treehousecareerprojects.readie.model.SearchResult;
  * Created by Dan on 2/17/2015.
  */
 public class SearchResultAdapter extends BaseAdapter {
-    private static final int EMPTY_IMAGE_BYTE_COUNT = 807;
+    public static final int EMPTY_IMAGE_BYTE_COUNT = 807;
 
     private Context context;
     private List<SearchResult> searchResults;
