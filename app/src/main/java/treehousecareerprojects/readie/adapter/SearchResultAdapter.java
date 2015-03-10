@@ -16,16 +16,13 @@ import java.util.List;
 import treehousecareerprojects.readie.R;
 import treehousecareerprojects.readie.ReadieApplication;
 import treehousecareerprojects.readie.http.HttpConnection;
-import treehousecareerprojects.readie.http.HttpMethod;
-import treehousecareerprojects.readie.http.HttpRequest;
-import treehousecareerprojects.readie.http.HttpResponse;
+import treehousecareerprojects.readie.http.request.BookCoverRequest;
 import treehousecareerprojects.readie.model.SearchResult;
 
 /**
  * Created by Dan on 2/17/2015.
  */
 public class SearchResultAdapter extends BaseAdapter {
-    private static final String BOOK_COVER_PATH_FORMAT = "http://covers.openlibrary.org/b/ISBN/%s-M.jpg";
     private static final int EMPTY_IMAGE_BYTE_COUNT = 807;
 
     private Context context;
@@ -41,11 +38,7 @@ public class SearchResultAdapter extends BaseAdapter {
     private void requestBookCovers() {
         for(SearchResult result : searchResults)
             HttpConnection.sendInBackground(
-                    new BookCoverRequest(formatBookCoverPath(result.getIsbn()), result));
-    }
-
-    private String formatBookCoverPath(String isbn) {
-        return String.format(BOOK_COVER_PATH_FORMAT, isbn);
+                    new BookCoverRequest(this, result.getIsbn(), result));
     }
 
     private void assignBookCover(SearchResult result, ViewHolder holder) {
@@ -116,25 +109,5 @@ public class SearchResultAdapter extends BaseAdapter {
         TextView bookTitle;
         TextView author;
         TextView snippet;
-    }
-
-    private class BookCoverRequest extends HttpRequest {
-        private SearchResult searchResult;
-
-        public BookCoverRequest(String url, SearchResult searchResult) {
-            super(HttpMethod.GET, url);
-            this.searchResult = searchResult;
-        }
-
-        @Override
-        public void onSuccess(HttpResponse response) {
-            byte[] image = response.getResponseBody();
-            searchResult.setBookCoverMedium(response.getResponseBody());
-
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onFailure(HttpResponse response) {}
     }
 }

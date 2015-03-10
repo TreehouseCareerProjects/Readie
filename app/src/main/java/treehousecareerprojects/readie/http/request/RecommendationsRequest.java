@@ -42,7 +42,6 @@ public class RecommendationsRequest extends HttpRequest {
         }
         catch(UnsupportedEncodingException e) {
             //TODO: Add error dialog
-            e.printStackTrace();
         }
 
         return url;
