@@ -44,21 +44,21 @@ public class ReviewActivity extends ActionBarActivity {
 
     public void insertReview(Review review, SearchResult result) {
         TextView authorLabel = (TextView)findViewById(R.id.authorLabel);
-        TextView descriptionLabel = (TextView)findViewById(R.id.descriptionLabel);
+        TextView descriptionLabel = (TextView)findViewById(R.id.reviewerLabel);
         TextView titleLabel = (TextView)findViewById(R.id.titleLabel);
         TextView reviewLabel = (TextView)findViewById(R.id.reviewLabel);
 
         String reviewer = result.getReviewer();
         descriptionLabel.setText(reviewer.equals("") ? "" : "Review by: " + reviewer);
+        authorLabel.setText("by " + result.getAuthor());
         titleLabel.setText(result.getBookTitle());
-        authorLabel.setText(result.getAuthor());
         reviewLabel.setText(review.getBody());
 
         decodeImage(result.getBookCoverMedium());
     }
 
     private void decodeImage(byte[] imageData) {
-        ImageView bookCover = (ImageView)findViewById(R.id.testImageView);
+        ImageView bookCover = (ImageView)findViewById(R.id.reviewBookCover);
 
         final boolean isNull = imageData == null;
         final boolean wasNotFound = !isNull && imageData.length == SearchResultAdapter.EMPTY_IMAGE_BYTE_COUNT;

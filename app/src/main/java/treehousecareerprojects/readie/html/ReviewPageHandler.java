@@ -69,7 +69,7 @@ public class ReviewPageHandler extends PageHandler {
         if(bodyText.toString().trim().equals(""))
             throw new PageHandlerException(R.string.page_handler_exception_message);
 
-        review.setBody(cleanBodyString(bodyText.toString()));
+        review.setBody("\t" + cleanBodyString(bodyText.toString()));
 
         return review;
     }
