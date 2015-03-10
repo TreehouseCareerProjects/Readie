@@ -3,6 +3,8 @@ package treehousecareerprojects.readie;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import java.util.Random;
+
 import treehousecareerprojects.readie.view.MainActionBar;
 
 
@@ -17,4 +19,13 @@ public class MainActivity extends ActionBarActivity {
         MainActionBar actionBar = new MainActionBar(this, getSupportActionBar());
         actionBar.assembleActionBar();
     }
+
+    private char getRandomLetter() {
+        Random random = new Random();
+        String letterChoices = "abcdefghi";
+
+        return letterChoices.charAt(random.nextInt(letterChoices.length()));
+    }
+
+
 }

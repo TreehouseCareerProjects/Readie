@@ -57,4 +57,7 @@
     <!-- Action Bar Titles -->
     <string name="action_bar_main_title">Readie</string>
 
+    <!-- Main Page -->
+    <string name="recommendation_prompt">You might like these books</string>
+
 </resources>

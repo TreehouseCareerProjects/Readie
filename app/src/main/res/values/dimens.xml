@@ -39,6 +39,11 @@
     <dimen name="spinner_margin_left">10dp</dimen>
     <dimen name="spinner_padding_right">15dp</dimen>
 
+    <!-- Main Page -->
+    <dimen name="recommendation_top_margin">10dp</dimen>
+    <dimen name="recommendation_bottom_margin">5dp</dimen>
+    <dimen name="recommendation_text_size">15sp</dimen>
+
     <!-- Action Bar -->
     <dimen name="action_icon_padding_horizontal">10dp</dimen>
     <dimen name="action_icon_padding_vertical">5dp</dimen>
