@@ -1,8 +1,10 @@
 package treehousecareerprojects.readie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -31,7 +33,9 @@ public class MainActivity extends ActionBarActivity {
 
         recommendations = new ArrayList<>();
         recommendationsAdapter = new SearchResultAdapter(this, recommendations);
-        ((ListView)findViewById(R.id.recommendationList)).setAdapter(recommendationsAdapter);
+        ListView listView = (ListView)findViewById(R.id.recommendationList);
+        listView.setOnItemClickListener(new RecommendationsItemClickListener());
+        listView.setAdapter(recommendationsAdapter);
 
         HttpConnection.sendInBackground(new RecommendationsRequest(this, getString(R.string.api_key)));
     }
@@ -46,5 +50,16 @@ public class MainActivity extends ActionBarActivity {
     public void hideRecommendations() {
         findViewById(R.id.recommendationList).setVisibility(View.INVISIBLE);
         findViewById(R.id.recommendationLabel).setVisibility(View.INVISIBLE);
+    }
+
+    private class RecommendationsItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent reviewIntent = new Intent(MainActivity.this, ReviewActivity.class);
+            reviewIntent.putExtra(
+                    SearchResultActivity.SEARCH_RESULT_ID,
+                    (SearchResult)(recommendationsAdapter.getItem(position)));
+            startActivity(reviewIntent);
+        }
     }
 }
